@@ -41,19 +41,23 @@ const HabitsList = () => {
             <>
               List of habits
               <table>
-                <tr>
-                  <th>Habit</th>
-                  <th>Target Streak</th>
-                  <th>Created At</th>
-                </tr>
-                {habitList?.map((habit) => (
-                  <tr key={habit.id}>
-                    <td>{habit.name}</td>
-                    <td>{habit.target_streak}</td>
-
-                    <td>{new Date(habit.created_at).toLocaleDateString()}</td>
+                <thead>
+                  <tr>
+                    <th>Habit</th>
+                    <th>Target Streak</th>
+                    <th>Created At</th>
                   </tr>
-                ))}
+                </thead>
+                <tbody>
+                  {habitList?.map((habit) => (
+                    <tr key={habit.id}>
+                      <td>{habit.name}</td>
+                      <td>{habit.target_streak}</td>
+
+                      <td>{new Date(habit.created_at).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </>
           ) : (
