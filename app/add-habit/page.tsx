@@ -1,8 +1,9 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import Links from "./components/Links";
 import { cookies } from "next/headers";
+import Form from "../components/Form";
+import styles from "./add-habit.module.scss";
 
-export default function Home() {
+export default function AddHabitPage() {
   const supabase = createServerComponentClient({ cookies });
 
   const fetchUser = async () => {
@@ -11,17 +12,13 @@ export default function Home() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return (
-        <div>
-          <div>You need to log in to access this page.</div>
-        </div>
-      );
+      return <div>You need to log in to access this page.</div>;
     }
 
     return (
-      <div>
-        <div>Welcome, {user.email}!</div>
-        <Links />
+      <div className={styles.addHabitContainer}>
+        <div>Add a habit:</div>
+        <Form />
       </div>
     );
   };
