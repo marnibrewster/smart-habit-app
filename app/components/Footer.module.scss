@@ -1,0 +1,9 @@
+.footerContainer {
+  display: flex;
+  gap: var(--spacing-small);
+  padding: var(--spacing-medium) var(--spacing-large);
+}
+
+.activeLink {
+  // color: white;
+}

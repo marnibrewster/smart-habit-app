@@ -1,0 +1,21 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  padding: var(--spacing-large);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.input {
+  color: var(--secondary-color);
+  width: fit-content;
+}
+
+.loginButton {
+  width: fit-content;
+}
