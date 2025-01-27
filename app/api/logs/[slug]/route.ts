@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   const supabase = createRouteHandlerClient({ cookies });
-  const { slug } = params;
+  const { slug } = await params;
 
   const { data, error } = await supabase
     .from("habit_logs")
