@@ -3,9 +3,12 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function GET() {
-  const supabase = createRouteHandlerClient({ cookies });
+  const awaitedCookies = await cookies;
+  while (!awaitedCookies) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  const supabase = createRouteHandlerClient({ cookies: awaitedCookies });
 
-  // Get the authenticated user
   const {
     data: { user },
     error: userError,

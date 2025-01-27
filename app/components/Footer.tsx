@@ -16,7 +16,7 @@ type FooterLink = {
 const Footer = () => {
   const supabase = createClientComponentClient();
   const pathname = usePathname();
-  const { user, error } = useUser();
+  const { user } = useUser();
 
   const links = useMemo<FooterLink[]>(
     () => [

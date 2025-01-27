@@ -11,9 +11,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Edit } from "@mui/icons-material";
+import Edit from "@mui/icons-material/Edit";
 import useUser from "../hooks/useUser";
-import { Button } from "@mui/material";
 import Link from "next/link";
 
 const HabitsList = () => {
@@ -42,8 +41,6 @@ const HabitsList = () => {
       setError("Failed to fetch habits");
     }
   }, []);
-
-  const handleEdit = useCallback(async (habitId: string) => {}, []);
 
   const deleteHabit = useCallback(
     async (habitId: string) => {
@@ -102,7 +99,7 @@ const HabitsList = () => {
                         {isAdmin ? (
                           <TableCell>
                             <IconButton>
-                              <Edit onClick={() => handleEdit(habit.id)} />
+                              <Edit />
                             </IconButton>
                           </TableCell>
                         ) : (

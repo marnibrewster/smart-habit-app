@@ -4,8 +4,9 @@ import HomePage from "./components/HomePage";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-export default function Home() {
-  const supabase = createServerComponentClient({ cookies });
+export default async function Home() {
+  const awaitedCookies = await cookies;
+  const supabase = createServerComponentClient({ cookies: awaitedCookies });
 
   const fetchUser = async () => {
     const {

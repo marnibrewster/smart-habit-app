@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const awaitedCookies = await cookies;
+  const supabase = createRouteHandlerClient({ cookies: awaitedCookies });
   const {
     data: { user },
     error: sessionError,
@@ -50,8 +51,9 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ habit }, { status: 200 });
 }
 
-export async function GET(req: NextRequest) {
-  const supabase = createRouteHandlerClient({ cookies });
+export async function GET() {
+  const awaitedCookies = await cookies;
+  const supabase = createRouteHandlerClient({ cookies: awaitedCookies });
 
   // Get the authenticated user
   const {
@@ -82,7 +84,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const supabase = createRouteHandlerClient({ cookies });
+  const awaitedCookies = await cookies;
+  const supabase = createRouteHandlerClient({ cookies: awaitedCookies });
   const { id } = await req.json();
 
   const { error } = await supabase.from("habits").delete().eq("id", id);

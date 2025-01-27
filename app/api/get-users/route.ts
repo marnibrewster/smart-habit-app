@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function GET() {
-  const supabase = createRouteHandlerClient({ cookies });
+  const awaitedCookies = await cookies;
+  const supabase = createRouteHandlerClient({ cookies: awaitedCookies });
 
   // Get the authenticated user
   const {

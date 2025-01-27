@@ -3,8 +3,9 @@ import { cookies } from "next/headers";
 import styles from "./habits.module.scss";
 import HabitsList from "../components/HabitsList";
 
-export default function HabitsPage() {
-  const supabase = createServerComponentClient({ cookies });
+export default async function HabitsPage() {
+  const awaitedCookies = await cookies;
+  const supabase = createServerComponentClient({ cookies: awaitedCookies });
 
   const fetchUser = async () => {
     const {
