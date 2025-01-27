@@ -1,6 +1,8 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Links from "./components/Links";
+import HomePage from "./components/HomePage";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 export default function Home() {
   const supabase = createServerComponentClient({ cookies });
@@ -13,14 +15,16 @@ export default function Home() {
     if (!user) {
       return (
         <div>
-          <div>You need to log in to access this page.</div>
+          <div>
+            You need to <Link href="/login">log in</Link> to access this page.
+          </div>
         </div>
       );
     }
 
     return (
       <div>
-        <div>Welcome, {user.email}!</div>
+        <HomePage />
         <Links />
       </div>
     );

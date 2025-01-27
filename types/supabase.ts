@@ -2,6 +2,9 @@ export type User = {
   id: string;
   email: string;
   created_at: string;
+  role: string;
+  first_name: string;
+  last_name: string;
 };
 
 export type Habit = {
@@ -18,4 +21,5 @@ export type HabitLog = {
   date: string;
   completed: boolean;
   created_at: string;
+  comment?: string;
 };

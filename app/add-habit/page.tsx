@@ -17,7 +17,6 @@ export default function AddHabitPage() {
 
     return (
       <div className={styles.addHabitContainer}>
-        <div>Add a habit:</div>
         <Form />
       </div>
     );

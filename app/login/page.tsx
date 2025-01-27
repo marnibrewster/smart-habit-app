@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import styles from "./login.module.scss";
 import Link from "next/link";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import styles from "./login.module.scss";
 
 export default function LoginPage() {
   const supabase = createClientComponentClient();
@@ -37,21 +39,31 @@ export default function LoginPage() {
   return (
     <div className={styles.loginContainer}>
       <h1>Login</h1>
-      <input
-        className={styles.input}
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        className={styles.input}
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button>
+      <div className={styles.loginForm}>
+        <TextField
+          required
+          id="outlined-required"
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          required
+          id="outlined-required"
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button
+          className={styles.loginButton}
+          onClick={handleLogin}
+          variant="contained"
+        >
+          Login
+        </Button>
+      </div>
       {error && <p>{error}</p>}
       <Link href={"/signup"}>Create account</Link>
     </div>

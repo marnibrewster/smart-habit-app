@@ -1,25 +1,36 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import styles from "./Footer.module.scss";
 import Link from "next/link";
+import useUser from "../hooks/useUser";
+
+type FooterLink = {
+  label: string;
+  url?: string;
+  onClick?: () => void;
+};
 
 const Footer = () => {
   const supabase = createClientComponentClient();
-  const [links, setLinks] = useState<
-    {
-      label: string;
-      url?: string;
-      onClick?: () => void;
-    }[]
-  >([
-    { label: "Home", url: "/" },
-    { label: "Login", url: "/login" },
-    { label: "Sign Up", url: "/signup" },
-    { label: "Add Habit", url: "/add-habit" },
-    { label: "Habits", url: "/habits" },
-  ]);
+  const pathname = usePathname();
+  const { user, error } = useUser();
+
+  const links = useMemo<FooterLink[]>(
+    () => [
+      { label: "Home", url: "/" },
+      ...(!user ? [{ label: "Login", url: "/login" }] : []),
+      ...(!user ? [{ label: "Sign Up", url: "/signup" }] : []),
+      ...(user?.role === "admin"
+        ? [{ label: "Add Habit", url: "/add-habit" }]
+        : []),
+      { label: "Habits", url: "/habits" },
+    ],
+    [user]
+  );
+
   const [logoutError, setLogoutError] = useState("");
 
   const handleLogout = useCallback(async () => {
@@ -32,28 +43,32 @@ const Footer = () => {
     }
   }, [supabase.auth]);
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      if (data.user) {
-        setLinks([
-          { label: "Home", url: "/" },
-          { label: "Add Habit", url: "/add-habit" },
-          { label: "Habits", url: "/habits" },
-          { label: "Logout", onClick: handleLogout },
-        ]);
+  const isActive = useCallback(
+    (link: FooterLink) => {
+      if (link.url) {
+        return pathname === link.url;
       }
-    };
-    checkUser();
-  }, [handleLogout, supabase.auth]);
+
+      return false;
+    },
+    [pathname]
+  );
 
   return (
     <div className={styles.footerContainer}>
       {links.map((link, index) => (
-        <Link key={index} href={link.url || "#"} onClick={link.onClick}>
+        <Link
+          key={index}
+          href={link.url || "#"}
+          onClick={link.onClick}
+          className={isActive(link) ? styles.activeLink : undefined}
+        >
           {link.label}
         </Link>
       ))}
+      <Link href="#" onClick={handleLogout}>
+        Logout
+      </Link>
       {logoutError}
     </div>
   );

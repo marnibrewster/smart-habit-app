@@ -17,7 +17,6 @@ export default function HabitsPage() {
 
     return (
       <div className={styles.habitContainer}>
-        <div>Habits:</div>
         <HabitsList />
       </div>
     );

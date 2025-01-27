@@ -1,12 +1,16 @@
 import { supabase } from "@/lib/supabaseClient";
 import { useState } from "react";
-import styles from "./Auth.module.scss";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import Link from "next/link";
+import styles from "./Auth.module.scss";
 
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const signUp = async () => {
     try {
@@ -15,6 +19,12 @@ export default function Auth() {
         await supabase.auth.signUp({
           email,
           password,
+          options: {
+            data: {
+              first_name: firstName,
+              last_name: lastName,
+            },
+          },
         });
 
       if (signUpError) {
@@ -29,6 +39,9 @@ export default function Auth() {
         const { error: insertError } = await supabase.from("users").insert({
           id: user.id,
           email: user.email,
+          first_name: firstName,
+          last_name: lastName,
+          role: "non-admin",
         });
 
         if (insertError) {
@@ -37,33 +50,52 @@ export default function Auth() {
           );
           return;
         }
-
-        // Success: Handle any post-signup actions
-        console.log("User successfully signed up and added to the database");
       }
+      // Redirect to home page after successful sign up
+      window.location.href = "/";
     } catch (err) {
       console.log({ err });
-      setError("Unexpected error occurred during signup");
+      setError("Unexpected error occurred during signup" + err);
     }
   };
 
   return (
     <div className={styles.authContainer}>
-      <input
-        className={styles.input}
+      <TextField
+        required
+        id="outlined-required"
+        label="First name"
+        type="text"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+      <TextField
+        required
+        id="outlined-required"
+        label="Last name"
+        type="text"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+      />
+      <TextField
+        required
+        id="outlined-required"
+        label="Email"
         type="email"
-        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
-        className={styles.input}
+      <TextField
+        required
+        id="outlined-required"
+        label="Password"
         type="password"
-        placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button onClick={signUp}>Sign Up</button>
+      <Button onClick={signUp} variant="contained">
+        Sign Up
+      </Button>
       {error && <p>{error}</p>}
       <Link href={"/login"}>Login</Link>
     </div>
